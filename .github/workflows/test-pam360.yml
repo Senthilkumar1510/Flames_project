@@ -11,5 +11,13 @@ jobs:
         URL="${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=pam360"
         AUTH="Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}"
         TOKEN=$(curl -s -H "$AUTH" "$URL" | jq -r .value)
-        echo "$TOKEN"
+        echo "$TOKEN" > token.txt
+        echo "Token saved. Length: ${#TOKEN}"
+        echo "Payload:"
         echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
+    - name: Upload Token
+      uses: actions/upload-artifact@v4
+      with:
+        name: jwt-token
+        path: token.txt
+        retention-days: 1
