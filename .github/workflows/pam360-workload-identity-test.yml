@@ -1,10 +1,10 @@
-  name: PAM360 Workload Identity - Get JWT
-  on: workflow_dispatch
+name: PAM360 Workload Identity - Get JWT
+on: workflow_dispatch
 
-  permissions:
+permissions:
     id-token: write
-
-  jobs:
+ 
+ jobs:
     get-token:
       runs-on: ubuntu-latest
       steps:
@@ -12,13 +12,11 @@
         run: |
           TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
             "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=pam360" | jq -r .value)
-          echo "$TOKEN" > token.txt
+
           echo "=== JWT Claims ==="
           echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
 
-      - name: Upload Token
-        uses: actions/upload-artifact@v4
-        with:
-          name: jwt-token
-          path: token.txt
-          retention-days: 1
+          echo ""
+          echo "=== COPY THIS TOKEN (expires in 5 min) ==="
+          echo "$TOKEN"
+          echo "==========================================="
