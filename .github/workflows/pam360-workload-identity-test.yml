@@ -1,10 +1,10 @@
 name: PAM360 Workload Identity - Get JWT
-on: workflow_dispatch
+"on": workflow_dispatch
 
 permissions:
     id-token: write
- 
- jobs:
+
+  jobs:
     get-token:
       runs-on: ubuntu-latest
       steps:
@@ -17,6 +17,6 @@ permissions:
           echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
 
           echo ""
-          echo "=== COPY THIS TOKEN (expires in 5 min) ==="
+          echo "========== COPY TOKEN BELOW =========="
           echo "$TOKEN"
-          echo "==========================================="
+          echo "======================================"
